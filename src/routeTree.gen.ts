@@ -9,38 +9,289 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkerDashboardRouteImport } from './routes/worker.dashboard'
+import { Route as OfficerDashboardRouteImport } from './routes/officer.dashboard'
+import { Route as OfficerComplaintsRouteImport } from './routes/officer.complaints'
+import { Route as OfficerAnalyticsRouteImport } from './routes/officer.analytics'
+import { Route as CitizenReportRouteImport } from './routes/citizen.report'
+import { Route as CitizenProfileRouteImport } from './routes/citizen.profile'
+import { Route as CitizenNotificationsRouteImport } from './routes/citizen.notifications'
+import { Route as CitizenNearbyRouteImport } from './routes/citizen.nearby'
+import { Route as CitizenDashboardRouteImport } from './routes/citizen.dashboard'
+import { Route as CitizenComplaintsRouteImport } from './routes/citizen.complaints'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as WorkerTasksIdRouteImport } from './routes/worker.tasks.$id'
+import { Route as CitizenComplaintsIdRouteImport } from './routes/citizen.complaints.$id'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkerDashboardRoute = WorkerDashboardRouteImport.update({
+  id: '/worker/dashboard',
+  path: '/worker/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfficerDashboardRoute = OfficerDashboardRouteImport.update({
+  id: '/officer/dashboard',
+  path: '/officer/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfficerComplaintsRoute = OfficerComplaintsRouteImport.update({
+  id: '/officer/complaints',
+  path: '/officer/complaints',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OfficerAnalyticsRoute = OfficerAnalyticsRouteImport.update({
+  id: '/officer/analytics',
+  path: '/officer/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitizenReportRoute = CitizenReportRouteImport.update({
+  id: '/citizen/report',
+  path: '/citizen/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitizenProfileRoute = CitizenProfileRouteImport.update({
+  id: '/citizen/profile',
+  path: '/citizen/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitizenNotificationsRoute = CitizenNotificationsRouteImport.update({
+  id: '/citizen/notifications',
+  path: '/citizen/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitizenNearbyRoute = CitizenNearbyRouteImport.update({
+  id: '/citizen/nearby',
+  path: '/citizen/nearby',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitizenDashboardRoute = CitizenDashboardRouteImport.update({
+  id: '/citizen/dashboard',
+  path: '/citizen/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitizenComplaintsRoute = CitizenComplaintsRouteImport.update({
+  id: '/citizen/complaints',
+  path: '/citizen/complaints',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/admin/settings',
+  path: '/admin/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/admin/dashboard',
+  path: '/admin/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/admin/analytics',
+  path: '/admin/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkerTasksIdRoute = WorkerTasksIdRouteImport.update({
+  id: '/worker/tasks/$id',
+  path: '/worker/tasks/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitizenComplaintsIdRoute = CitizenComplaintsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CitizenComplaintsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/citizen/complaints': typeof CitizenComplaintsRouteWithChildren
+  '/citizen/dashboard': typeof CitizenDashboardRoute
+  '/citizen/nearby': typeof CitizenNearbyRoute
+  '/citizen/notifications': typeof CitizenNotificationsRoute
+  '/citizen/profile': typeof CitizenProfileRoute
+  '/citizen/report': typeof CitizenReportRoute
+  '/officer/analytics': typeof OfficerAnalyticsRoute
+  '/officer/complaints': typeof OfficerComplaintsRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
+  '/worker/dashboard': typeof WorkerDashboardRoute
+  '/citizen/complaints/$id': typeof CitizenComplaintsIdRoute
+  '/worker/tasks/$id': typeof WorkerTasksIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/citizen/complaints': typeof CitizenComplaintsRouteWithChildren
+  '/citizen/dashboard': typeof CitizenDashboardRoute
+  '/citizen/nearby': typeof CitizenNearbyRoute
+  '/citizen/notifications': typeof CitizenNotificationsRoute
+  '/citizen/profile': typeof CitizenProfileRoute
+  '/citizen/report': typeof CitizenReportRoute
+  '/officer/analytics': typeof OfficerAnalyticsRoute
+  '/officer/complaints': typeof OfficerComplaintsRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
+  '/worker/dashboard': typeof WorkerDashboardRoute
+  '/citizen/complaints/$id': typeof CitizenComplaintsIdRoute
+  '/worker/tasks/$id': typeof WorkerTasksIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/citizen/complaints': typeof CitizenComplaintsRouteWithChildren
+  '/citizen/dashboard': typeof CitizenDashboardRoute
+  '/citizen/nearby': typeof CitizenNearbyRoute
+  '/citizen/notifications': typeof CitizenNotificationsRoute
+  '/citizen/profile': typeof CitizenProfileRoute
+  '/citizen/report': typeof CitizenReportRoute
+  '/officer/analytics': typeof OfficerAnalyticsRoute
+  '/officer/complaints': typeof OfficerComplaintsRoute
+  '/officer/dashboard': typeof OfficerDashboardRoute
+  '/worker/dashboard': typeof WorkerDashboardRoute
+  '/citizen/complaints/$id': typeof CitizenComplaintsIdRoute
+  '/worker/tasks/$id': typeof WorkerTasksIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/admin/analytics'
+    | '/admin/dashboard'
+    | '/admin/settings'
+    | '/admin/users'
+    | '/citizen/complaints'
+    | '/citizen/dashboard'
+    | '/citizen/nearby'
+    | '/citizen/notifications'
+    | '/citizen/profile'
+    | '/citizen/report'
+    | '/officer/analytics'
+    | '/officer/complaints'
+    | '/officer/dashboard'
+    | '/worker/dashboard'
+    | '/citizen/complaints/$id'
+    | '/worker/tasks/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/admin/analytics'
+    | '/admin/dashboard'
+    | '/admin/settings'
+    | '/admin/users'
+    | '/citizen/complaints'
+    | '/citizen/dashboard'
+    | '/citizen/nearby'
+    | '/citizen/notifications'
+    | '/citizen/profile'
+    | '/citizen/report'
+    | '/officer/analytics'
+    | '/officer/complaints'
+    | '/officer/dashboard'
+    | '/worker/dashboard'
+    | '/citizen/complaints/$id'
+    | '/worker/tasks/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/register'
+    | '/admin/analytics'
+    | '/admin/dashboard'
+    | '/admin/settings'
+    | '/admin/users'
+    | '/citizen/complaints'
+    | '/citizen/dashboard'
+    | '/citizen/nearby'
+    | '/citizen/notifications'
+    | '/citizen/profile'
+    | '/citizen/report'
+    | '/officer/analytics'
+    | '/officer/complaints'
+    | '/officer/dashboard'
+    | '/worker/dashboard'
+    | '/citizen/complaints/$id'
+    | '/worker/tasks/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  CitizenComplaintsRoute: typeof CitizenComplaintsRouteWithChildren
+  CitizenDashboardRoute: typeof CitizenDashboardRoute
+  CitizenNearbyRoute: typeof CitizenNearbyRoute
+  CitizenNotificationsRoute: typeof CitizenNotificationsRoute
+  CitizenProfileRoute: typeof CitizenProfileRoute
+  CitizenReportRoute: typeof CitizenReportRoute
+  OfficerAnalyticsRoute: typeof OfficerAnalyticsRoute
+  OfficerComplaintsRoute: typeof OfficerComplaintsRoute
+  OfficerDashboardRoute: typeof OfficerDashboardRoute
+  WorkerDashboardRoute: typeof WorkerDashboardRoute
+  WorkerTasksIdRoute: typeof WorkerTasksIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +299,152 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/worker/dashboard': {
+      id: '/worker/dashboard'
+      path: '/worker/dashboard'
+      fullPath: '/worker/dashboard'
+      preLoaderRoute: typeof WorkerDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/officer/dashboard': {
+      id: '/officer/dashboard'
+      path: '/officer/dashboard'
+      fullPath: '/officer/dashboard'
+      preLoaderRoute: typeof OfficerDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/officer/complaints': {
+      id: '/officer/complaints'
+      path: '/officer/complaints'
+      fullPath: '/officer/complaints'
+      preLoaderRoute: typeof OfficerComplaintsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/officer/analytics': {
+      id: '/officer/analytics'
+      path: '/officer/analytics'
+      fullPath: '/officer/analytics'
+      preLoaderRoute: typeof OfficerAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/citizen/report': {
+      id: '/citizen/report'
+      path: '/citizen/report'
+      fullPath: '/citizen/report'
+      preLoaderRoute: typeof CitizenReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/citizen/profile': {
+      id: '/citizen/profile'
+      path: '/citizen/profile'
+      fullPath: '/citizen/profile'
+      preLoaderRoute: typeof CitizenProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/citizen/notifications': {
+      id: '/citizen/notifications'
+      path: '/citizen/notifications'
+      fullPath: '/citizen/notifications'
+      preLoaderRoute: typeof CitizenNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/citizen/nearby': {
+      id: '/citizen/nearby'
+      path: '/citizen/nearby'
+      fullPath: '/citizen/nearby'
+      preLoaderRoute: typeof CitizenNearbyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/citizen/dashboard': {
+      id: '/citizen/dashboard'
+      path: '/citizen/dashboard'
+      fullPath: '/citizen/dashboard'
+      preLoaderRoute: typeof CitizenDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/citizen/complaints': {
+      id: '/citizen/complaints'
+      path: '/citizen/complaints'
+      fullPath: '/citizen/complaints'
+      preLoaderRoute: typeof CitizenComplaintsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/admin/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/admin/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/worker/tasks/$id': {
+      id: '/worker/tasks/$id'
+      path: '/worker/tasks/$id'
+      fullPath: '/worker/tasks/$id'
+      preLoaderRoute: typeof WorkerTasksIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/citizen/complaints/$id': {
+      id: '/citizen/complaints/$id'
+      path: '/$id'
+      fullPath: '/citizen/complaints/$id'
+      preLoaderRoute: typeof CitizenComplaintsIdRouteImport
+      parentRoute: typeof CitizenComplaintsRoute
+    }
   }
 }
 
+interface CitizenComplaintsRouteChildren {
+  CitizenComplaintsIdRoute: typeof CitizenComplaintsIdRoute
+}
+
+const CitizenComplaintsRouteChildren: CitizenComplaintsRouteChildren = {
+  CitizenComplaintsIdRoute: CitizenComplaintsIdRoute,
+}
+
+const CitizenComplaintsRouteWithChildren =
+  CitizenComplaintsRoute._addFileChildren(CitizenComplaintsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  CitizenComplaintsRoute: CitizenComplaintsRouteWithChildren,
+  CitizenDashboardRoute: CitizenDashboardRoute,
+  CitizenNearbyRoute: CitizenNearbyRoute,
+  CitizenNotificationsRoute: CitizenNotificationsRoute,
+  CitizenProfileRoute: CitizenProfileRoute,
+  CitizenReportRoute: CitizenReportRoute,
+  OfficerAnalyticsRoute: OfficerAnalyticsRoute,
+  OfficerComplaintsRoute: OfficerComplaintsRoute,
+  OfficerDashboardRoute: OfficerDashboardRoute,
+  WorkerDashboardRoute: WorkerDashboardRoute,
+  WorkerTasksIdRoute: WorkerTasksIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
