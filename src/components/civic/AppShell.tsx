@@ -148,7 +148,7 @@ export function AppShell({ role, navItems, title, subtitle, contextLabel, emerge
         {/* Mobile FAB */}
         {fabHref && (
           <Link
-            to={fabHref}
+            to={fabHref as never}
             className="fixed bottom-20 right-4 z-40 inline-flex h-14 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-pop transition hover:opacity-90 lg:hidden"
           >
             <Plus className="size-5" /> {fabLabel ?? "Add"}
