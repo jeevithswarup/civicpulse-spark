@@ -60,7 +60,7 @@ export function AppShell({ role, navItems, title, subtitle, contextLabel, emerge
               return (
                 <li key={it.to}>
                   <Link
-                    to={it.to}
+                    to={it.to as never}
                     className={cn(
                       "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
                       active
