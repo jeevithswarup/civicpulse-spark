@@ -18,8 +18,6 @@ export const officerNav: NavItem[] = [
   { to: "/officer/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/officer/complaints", label: "Complaints", icon: ClipboardList },
   { to: "/officer/analytics", label: "Analytics", icon: BarChart3 },
-  { to: "/officer/dashboard", label: "Workers", icon: Users },
-  { to: "/officer/dashboard", label: "Settings", icon: Settings },
 ];
 
 export const workerNav: NavItem[] = [
