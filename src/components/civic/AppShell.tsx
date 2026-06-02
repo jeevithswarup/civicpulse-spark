@@ -129,7 +129,7 @@ export function AppShell({ role, navItems, title, subtitle, contextLabel, emerge
             return (
               <Link
                 key={it.to}
-                to={it.to}
+                to={it.to as never}
                 className={cn(
                   "flex min-w-14 flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition",
                   active ? "text-primary" : "text-muted-foreground",
