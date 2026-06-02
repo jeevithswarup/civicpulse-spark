@@ -85,8 +85,8 @@ export function AppShell({ role, navItems, title, subtitle, contextLabel, emerge
         {emergencyCta && (
           <div className="p-4">
             <Link
-              to="/citizen/report"
-              search={{ priority: "emergency" }}
+              to={"/citizen/report" as never}
+              search={{ priority: "emergency" } as never}
               className="flex items-center justify-center gap-2 rounded-xl bg-[var(--emergency)] px-3 py-2.5 text-sm font-semibold text-white shadow-pop transition hover:opacity-90"
             >
               <AlertTriangle className="size-4" /> Report Emergency
