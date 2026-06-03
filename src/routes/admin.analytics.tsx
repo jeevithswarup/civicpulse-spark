@@ -44,10 +44,10 @@ function AdminAnalytics() {
   return (
     <AppShell role="admin" navItems={adminNav} title="City-Wide Analytics" subtitle="Last 30 days" contextLabel="Admin">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatCard label="Total Complaints" value={mockStats.totalComplaints} icon={Activity} tone="default" />
-        <StatCard label="Resolved (30d)" value={mockStats.resolvedThisMonth} icon={CheckCircle2} tone="success" />
-        <StatCard label="Avg Resolution" value={mockStats.avgResolutionDays} suffix=" days" icon={Clock} tone="warning" />
-        <StatCard label="Satisfaction" value={mockStats.satisfactionRating} suffix=" / 5" icon={Star} tone="default" />
+        <StatCard label="Total Complaints" value={mockStats.totalComplaints} icon={Activity} trend={12} />
+        <StatCard label="Resolved (30d)" value={mockStats.resolvedThisMonth} icon={CheckCircle2} trend={8} />
+        <StatCard label="Avg Resolution" value={mockStats.avgResolutionDays} icon={Clock} hint="days" trend={-5} />
+        <StatCard label="Satisfaction" value={mockStats.satisfactionRating} icon={Star} hint="out of 5" trend={3} />
       </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-3">
