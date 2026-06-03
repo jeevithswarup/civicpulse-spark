@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ComingSoon } from "@/components/civic/ComingSoon";
 import { citizenNav } from "@/data/nav";
 import { AppShell } from "@/components/civic/AppShell";
 import { ComplaintCard } from "@/components/civic/ComplaintCard";
