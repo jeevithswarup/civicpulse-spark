@@ -5,7 +5,9 @@
  * On 401, clears tokens and redirects to /login.
  */
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+// BASE_URL is empty in dev (Vite proxy handles /api/* → http://localhost:8000)
+// Set VITE_API_URL in .env for production (e.g. https://api.civicpulse.in)
+const BASE_URL = (import.meta.env.VITE_API_URL as string) ?? "";
 
 // ---------- token helpers ----------
 
