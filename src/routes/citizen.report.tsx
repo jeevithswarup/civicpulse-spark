@@ -4,8 +4,9 @@ import { AppShell } from "@/components/civic/AppShell";
 import { citizenNav } from "@/data/nav";
 import { CATEGORIES } from "@/data/categories";
 import { cn } from "@/lib/utils";
-import { AlertTriangle, ArrowLeft, ArrowRight, Camera, Check, MapPin, Mic, Upload } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, Camera, Check, Loader2, MapPin, Mic, Upload } from "lucide-react";
 import { toast } from "sonner";
+import { createComplaint } from "@/lib/api/complaints";
 
 export const Route = createFileRoute("/citizen/report")({
   component: ReportPage,
@@ -29,6 +30,10 @@ function ReportPage() {
   const [media, setMedia] = useState<string[]>([]);
   const [address, setAddress] = useState("RC Dutt Road, Vadodara");
   const [anonymous, setAnonymous] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  // default Vadodara coordinates; "Use my location" can update these
+  const [lat, setLat] = useState(22.3072);
+  const [lon, setLon] = useState(73.1812);
 
   const canNext = () => {
     if (step === 0) return !!category;
@@ -37,10 +42,48 @@ function ReportPage() {
     return true;
   };
 
-  const submit = () => {
-    toast.success("Complaint submitted — tracking ID CMP-2024-009");
-    navigate({ to: "/citizen/complaints" });
-  };
+  function useMyLocation() {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by your browser");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLat(pos.coords.latitude);
+        setLon(pos.coords.longitude);
+        toast.success("Location updated!");
+      },
+      () => toast.error("Could not get your location. Please enter address manually.")
+    );
+  }
+
+  async function submit() {
+    if (!category) return;
+    setSubmitting(true);
+    try {
+      const complaint = await createComplaint({
+        title,
+        description,
+        category: category as "road" | "water" | "electricity" | "sanitation",
+        address,
+        latitude: lat,
+        longitude: lon,
+        priority,
+      });
+      toast.success(`Complaint submitted — ID: ${complaint.complaintID}`);
+      navigate({ to: "/citizen/complaints" as never });
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Submission failed. Please try again.";
+      // Handle the duplicate complaint case from your backend
+      if ((error as { data?: { duplicate?: boolean } })?.data?.duplicate) {
+        toast.warning("A similar complaint already exists nearby. View it instead?");
+      } else {
+        toast.error(msg);
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <AppShell role="citizen" navItems={citizenNav} title="Report an Issue" subtitle={`Step ${step + 1} of ${STEPS.length}`} contextLabel="Citizen">
@@ -202,7 +245,7 @@ function ReportPage() {
                     </span>
                   </div>
                 </div>
-                <button type="button" className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-lg bg-background/90 px-3 py-1.5 text-xs font-semibold shadow-card backdrop-blur hover:bg-background">
+                <button type="button" className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-lg bg-background/90 px-3 py-1.5 text-xs font-semibold shadow-card backdrop-blur hover:bg-background" onClick={useMyLocation}>
                   <MapPin className="size-3.5" /> Use my location
                 </button>
               </div>
@@ -213,7 +256,7 @@ function ReportPage() {
                   onChange={(e) => setAddress(e.target.value)}
                   className="mt-1 w-full rounded-lg border bg-background px-3 py-2.5 text-sm outline-none ring-primary/30 focus:ring-2"
                 />
-                <p className="mt-1 text-[11px] text-muted-foreground">Lat 22.3072, Lng 73.1812 — pinned automatically.</p>
+              <p className="mt-1 text-[11px] text-muted-foreground">Lat {lat.toFixed(4)}, Lng {lon.toFixed(4)} — pinned automatically.</p>
               </div>
               <label className="flex items-center gap-2 rounded-lg border bg-background p-3 text-sm">
                 <input type="checkbox" checked={anonymous} onChange={(e) => setAnonymous(e.target.checked)} className="size-4 rounded border-input" />
@@ -264,9 +307,11 @@ function ReportPage() {
             <button
               type="button"
               onClick={submit}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-pop"
+              disabled={submitting}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-pop disabled:opacity-60"
             >
-              <Upload className="size-4" /> Submit Complaint
+              {submitting ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
+              {submitting ? "Submitting…" : "Submit Complaint"}
             </button>
           )}
         </div>
