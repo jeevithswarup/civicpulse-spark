@@ -4,7 +4,7 @@ import { AppShell } from "@/components/civic/AppShell";
 import { citizenNav } from "@/data/nav";
 import { CATEGORIES } from "@/data/categories";
 import { cn } from "@/lib/utils";
-import { AlertTriangle, ArrowLeft, ArrowRight, Camera, Check, Loader2, MapPin, Mic, Upload } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, Camera, Check, Loader2, MapPin, Mic, Navigation, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { createComplaint } from "@/lib/api/complaints";
 
@@ -34,6 +34,8 @@ function ReportPage() {
   // default Vadodara coordinates; "Use my location" can update these
   const [lat, setLat] = useState(22.3072);
   const [lon, setLon] = useState(73.1812);
+  const [locationFetching, setLocationFetching] = useState(false);
+  const [locationGranted, setLocationGranted] = useState(false);
 
   const canNext = () => {
     if (step === 0) return !!category;
@@ -47,13 +49,37 @@ function ReportPage() {
       toast.error("Geolocation is not supported by your browser");
       return;
     }
+    setLocationFetching(true);
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setLat(pos.coords.latitude);
-        setLon(pos.coords.longitude);
-        toast.success("Location updated!");
+      async (pos) => {
+        const newLat = pos.coords.latitude;
+        const newLon = pos.coords.longitude;
+        setLat(newLat);
+        setLon(newLon);
+        setLocationGranted(true);
+        setLocationFetching(false);
+        toast.success("Location pinned ✓");
+
+        // Reverse geocode using OpenStreetMap Nominatim (free, no API key)
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${newLat}&lon=${newLon}&format=json`
+          );
+          const data = await res.json();
+          if (data?.display_name) {
+            // Shorten to road + city
+            const parts = data.display_name.split(",");
+            setAddress(parts.slice(0, 3).join(",").trim());
+          }
+        } catch {
+          // Reverse geocode failed — user can type address manually
+        }
       },
-      () => toast.error("Could not get your location. Please enter address manually.")
+      () => {
+        setLocationFetching(false);
+        toast.error("Location access denied. Please type your address manually.");
+      },
+      { timeout: 10000, enableHighAccuracy: true }
     );
   }
 
@@ -235,8 +261,12 @@ function ReportPage() {
           {step === 2 && (
             <section className="animate-[fade-in_0.25s_ease-out] space-y-4">
               <h2 className="text-lg font-semibold">Where is it?</h2>
+
+              {/* Map visual with live pin */}
               <div className="relative h-56 overflow-hidden rounded-xl border bg-[radial-gradient(circle_at_30%_30%,var(--primary)/15%,transparent_60%),linear-gradient(to_bottom_right,var(--muted),var(--accent))]">
                 <div className="absolute inset-0 [background-image:linear-gradient(var(--border)_1px,transparent_1px),linear-gradient(90deg,var(--border)_1px,transparent_1px)] [background-size:24px_24px] opacity-50" />
+
+                {/* Pulsing pin */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                   <div className="relative">
                     <span className="absolute inset-0 -m-3 animate-civic-pulse rounded-full bg-primary/30" />
@@ -245,21 +275,52 @@ function ReportPage() {
                     </span>
                   </div>
                 </div>
-                <button type="button" className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-lg bg-background/90 px-3 py-1.5 text-xs font-semibold shadow-card backdrop-blur hover:bg-background" onClick={useMyLocation}>
-                  <MapPin className="size-3.5" /> Use my location
+
+                {/* Coordinates overlay */}
+                <div className="absolute bottom-3 left-3 rounded-lg bg-background/90 px-2.5 py-1.5 text-[10px] font-mono font-medium backdrop-blur">
+                  {lat.toFixed(5)}, {lon.toFixed(5)}
+                </div>
+
+                {/* Use my location button */}
+                <button
+                  type="button"
+                  onClick={useMyLocation}
+                  className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-lg bg-background/90 px-3 py-1.5 text-xs font-semibold shadow-card backdrop-blur hover:bg-background"
+                >
+                  <Navigation className="size-3.5" /> Use my location
                 </button>
+
+                {/* Location status */}
+                {locationFetching && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-sm">
+                    <div className="flex items-center gap-2 text-sm font-medium">
+                      <Loader2 className="size-4 animate-spin" /> Getting your location…
+                    </div>
+                  </div>
+                )}
               </div>
+
               <div>
                 <label className="text-xs font-medium text-muted-foreground">Address</label>
                 <input
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Enter the address of the issue"
                   className="mt-1 w-full rounded-lg border bg-background px-3 py-2.5 text-sm outline-none ring-primary/30 focus:ring-2"
                 />
-              <p className="mt-1 text-[11px] text-muted-foreground">Lat {lat.toFixed(4)}, Lng {lon.toFixed(4)} — pinned automatically.</p>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  📍 Coordinates: {lat.toFixed(5)}, {lon.toFixed(5)}
+                  {locationGranted && <span className="ml-2 text-green-600 font-medium">✓ GPS confirmed</span>}
+                </p>
               </div>
+
               <label className="flex items-center gap-2 rounded-lg border bg-background p-3 text-sm">
-                <input type="checkbox" checked={anonymous} onChange={(e) => setAnonymous(e.target.checked)} className="size-4 rounded border-input" />
+                <input
+                  type="checkbox"
+                  checked={anonymous}
+                  onChange={(e) => setAnonymous(e.target.checked)}
+                  className="size-4 rounded border-input"
+                />
                 <span>Submit anonymously (your name will be hidden from the public timeline)</span>
               </label>
             </section>
